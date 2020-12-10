@@ -9,10 +9,13 @@ ctx.fillStyle = "darkviolet";
 ctx.fillRect( 0, 0, canvas.width, canvas.height );
 
 // player
-const snakeSize = 50;
+const snakeSize = 30;
 let snakePosX = 0;
 let snakePosY = canvas.height / 2 - snakeSize / 2;
-let snakeSpeed = 5;
+let snakeSpeed = 30;
+
+let velocityX = 0;
+let velocityY = 0;
 
 
 ctx.fillStyle = 'white'
@@ -24,11 +27,9 @@ function gameLoop() {
 
 
     drawStuff();
-    // moveStuff();
+    moveStuff();
 
-    
-
-    requestAnimationFrame( gameLoop );
+    setTimeout( gameLoop, 1000/15 );
 }
 gameLoop()
 
@@ -53,27 +54,54 @@ function rectangle( color, x, y, width, height ) {
  *  MOVE EVERYTHING
  */
 function moveStuff() {
-    snakePosX += snakeSpeed;
+    snakePosX += snakeSpeed * velocityX;
+    snakePosY += snakeSpeed * velocityY;
 
 
-    if( snakePosX > canvas.width ) {
-        snakePosX = 0;
+
+    if( snakePosX > canvas.width + snakeSize ) {
+        snakePosX = -snakeSize;
     }
+    if( snakePosX < -snakeSize ) {
+        snakePosX = canvas.width;
+    }
+    if( snakePosY < -snakeSize ) {
+        snakePosY = canvas.height;
+    }
+    if( snakePosY > canvas.height ) {
+        snakePosY = 0;
+    }
+    
 }
 
 function keyPush(event) {
     switch( event.key ) {
         case 'ArrowUp':
-            snakePosY -= snakeSpeed;
+            if( velocityY != 1 ) {
+
+                velocityX = 0;
+                velocityY = -1;
+            }
             break;
         case 'ArrowDown':
-            snakePosY += snakeSpeed;
+            if( velocityY != -1 ) {
+                velocityX = 0;
+                velocityY = 1;
+            }
             break;
         case 'ArrowRight':
-            snakePosX += snakeSpeed;
+            if( velocityX != -1 ) {
+
+                velocityX = 1;
+                velocityY = 0;
+            }
             break;
         case 'ArrowLeft':
-            snakePosX -= snakeSpeed;
+            if( velocityX != 1 ) {
+
+                velocityX = -1;
+                velocityY = 0;
+            }
             break;
         
 
