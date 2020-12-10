@@ -4,11 +4,13 @@ document.addEventListener( 'keydown', keyPush );
 // canvas
 const canvas = document.querySelector( "canvas" );
 const ctx = canvas.getContext( "2d" );
+const scoreTitle = document.querySelector( '#scoreText' )
 
 ctx.fillStyle = "darkviolet";
 ctx.fillRect( 0, 0, canvas.width, canvas.height );
 
 // player
+let score = 0;
 const snakeSize = 30;
 let snakePosX = 0;
 let snakePosY = canvas.height / 2;
@@ -103,6 +105,8 @@ function moveStuff() {
     // food collision
     if( snakePosX == foodPosX && snakePosY == foodPosY ) {
         resetFood()
+        score++;
+        scoreTitle.textContent = score
 
         
     }
