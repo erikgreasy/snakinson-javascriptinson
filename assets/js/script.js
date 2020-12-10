@@ -144,8 +144,22 @@ function moveStuff() {
 }
 
 function resetFood() {
+    // GAME OVER there is nowhere to go
+    if( snakeLength === tileCountX * tileCountY ) {
+        gameOver()
+    }
     foodPosX = Math.floor( Math.random() * tileCountX ) * tileSize 
     foodPosY = Math.floor( Math.random() * tileCountY ) * tileSize 
+
+    // dont spawn food on snakes head
+    if( foodPosX === snakePosX && foodPosY === snakePosY ) {
+        resetFood()
+    } 
+
+    // dont spawn food on any snake part
+    if( tail.some( snakePart => snakePart.x === foodPosX && snakePart.y === foodPosY ) ) {
+        resetFood()
+    }
 }
 
 function keyPush(event) {
