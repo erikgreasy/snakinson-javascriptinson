@@ -11,11 +11,19 @@ ctx.fillRect( 0, 0, canvas.width, canvas.height );
 // player
 const snakeSize = 30;
 let snakePosX = 0;
-let snakePosY = canvas.height / 2 - snakeSize / 2;
-let snakeSpeed = 30;
+let snakePosY = canvas.height / 2;
+let snakeSpeed = snakeSize;
+
+const tileCountX = canvas.width / snakeSize
+const tileCountY = canvas.height / snakeSize
 
 let velocityX = 0;
 let velocityY = 0;
+
+// food
+let foodPosX = 390
+let foodPosY = 120
+
 
 
 ctx.fillStyle = 'white'
@@ -29,7 +37,7 @@ function gameLoop() {
     drawStuff();
     moveStuff();
 
-    setTimeout( gameLoop, 1000/15 );
+    setTimeout( gameLoop, 1000/10 );
 }
 gameLoop()
 
@@ -38,9 +46,26 @@ gameLoop()
  *  DRAW EVERYTHING
  */
 function drawStuff() {
+    // background
     rectangle( 'darkviolet', 0, 0, canvas.width, canvas.height );
-    rectangle( 'white', snakePosX, snakePosY, snakeSize, snakeSize );
 
+    
+    // gird
+    drawGrid()
+
+    rectangle( 'green', foodPosX, foodPosY, snakeSize, snakeSize )
+
+    // snake
+    rectangle( 'white', snakePosX, snakePosY, snakeSize, snakeSize );
+}
+
+function drawGrid() {
+    for( let i = 0; i < tileCountX; i++ ) {
+        for( let j = 0; j < tileCountY; j++ ) {
+
+            rectangle( "darkblue", snakeSize * i, snakeSize * j, snakeSize-1, snakeSize-1 )
+        }
+    }
 }
 
 // draw rectangle
@@ -58,18 +83,27 @@ function moveStuff() {
     snakePosY += snakeSpeed * velocityY;
 
 
-
-    if( snakePosX > canvas.width + snakeSize ) {
-        snakePosX = -snakeSize;
+    // wall collision
+    if( snakePosX > canvas.width - snakeSize ) {
+        snakePosX = 0;
     }
-    if( snakePosX < -snakeSize ) {
+    if( snakePosX < 0 ) {
         snakePosX = canvas.width;
     }
-    if( snakePosY < -snakeSize ) {
+    if( snakePosY > canvas.height-snakeSize ) {
+        snakePosY = 0;
+    }
+    if( snakePosY < 0 ) {
+        console.log(canvas.height)
         snakePosY = canvas.height;
     }
-    if( snakePosY > canvas.height ) {
-        snakePosY = 0;
+
+    // food collision
+    if( snakePosX == foodPosX && snakePosY == foodPosY ) {
+        foodPosX = Math.floor( Math.random() * tileCountX ) * snakeSize 
+        foodPosY = Math.floor( Math.random() * tileCountY ) * snakeSize 
+
+        
     }
     
 }
