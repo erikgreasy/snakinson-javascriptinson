@@ -4,3 +4,7 @@ body {
 canvas {
     border: 10px solid red;
 }
+
+h1 {
+    font-size: 4em;
+}
