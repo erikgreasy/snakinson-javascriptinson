@@ -21,8 +21,8 @@ let velocityX = 0;
 let velocityY = 0;
 
 // food
-let foodPosX = 390
-let foodPosY = 120
+let foodPosX = 0
+let foodPosY = 0
 
 
 
@@ -39,6 +39,8 @@ function gameLoop() {
 
     setTimeout( gameLoop, 1000/10 );
 }
+
+resetFood()
 gameLoop()
 
 
@@ -100,12 +102,16 @@ function moveStuff() {
 
     // food collision
     if( snakePosX == foodPosX && snakePosY == foodPosY ) {
-        foodPosX = Math.floor( Math.random() * tileCountX ) * snakeSize 
-        foodPosY = Math.floor( Math.random() * tileCountY ) * snakeSize 
+        resetFood()
 
         
     }
     
+}
+
+function resetFood() {
+    foodPosX = Math.floor( Math.random() * tileCountX ) * snakeSize 
+    foodPosY = Math.floor( Math.random() * tileCountY ) * snakeSize 
 }
 
 function keyPush(event) {
